@@ -1,8 +1,3 @@
----
-layout: null
-title: Our Photo Dump
----
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,72 +15,42 @@ title: Our Photo Dump
         <a href="../index.html">← Back to home</a>
       </div>
       <h1 class="brand">Our Photo Dump</h1>
-      <p class="tagline">All our photos — auto-collected from monthly entries and this folder.</p>
+      <p class="tagline">Photos we’ve dropped into this folder.</p>
     </div>
     <div class="hero-gradient"></div>
   </header>
 
   <main class="container section">
     <div class="gallery-grid">
-      {%- comment -%}
-        Collect candidates, then filter by extension inside the loop
-      {%- endcomment -%}
+      <!-- =============================
+           ADD YOUR PHOTOS HERE
+           Files must live in /photos/
+           Example names: image1.jpg, image2.jpg, beach.png
+           Duplicate a tile block per image.
+           ============================= -->
 
-      {%- assign entry_photos = site.static_files
-         | where_exp: "f", "f.path contains '/entries/'"
-         | where_exp: "f", "f.name contains 'photo'"
-      -%}
+      <a class="tile" href="image1.jpg" target="_blank">
+        <figure>
+          <img src="image1.jpg" alt="image1" loading="lazy" />
+          <figcaption>image1</figcaption>
+        </figure>
+      </a>
 
-      {%- assign loose_photos = site.static_files
-         | where_exp: "f", "f.path contains '/photos/'"
-      -%}
+      <a class="tile" href="image2.jpg" target="_blank">
+        <figure>
+          <img src="image2.jpg" alt="image2" loading="lazy" />
+          <figcaption>image2</figcaption>
+        </figure>
+      </a>
 
-      {%- assign all_photos = entry_photos | concat: loose_photos | sort: "path" | reverse -%}
-
-      {%- for f in all_photos -%}
-        {%- assign ext = f.extname | downcase -%}
-        {%- if ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.webp' or ext == '.gif' -%}
-          {%- assign caption = "" -%}
-
-          {%- if f.path contains '/entries/' -%}
-            {%- assign parts = f.path | split: "/" -%}
-            {%- assign month_dir = parts[2] -%}
-            {%- assign dparts = month_dir | split: "-" -%}
-            {%- assign yyyy = dparts[0] -%}
-            {%- assign mm   = dparts[1] -%}
-            {%- assign dd   = dparts[2] -%}
-
-            {%- case mm -%}
-              {%- when "01" -%}{%- assign mname = "January" -%}
-              {%- when "02" -%}{%- assign mname = "February" -%}
-              {%- when "03" -%}{%- assign mname = "March" -%}
-              {%- when "04" -%}{%- assign mname = "April" -%}
-              {%- when "05" -%}{%- assign mname = "May" -%}
-              {%- when "06" -%}{%- assign mname = "June" -%}
-              {%- when "07" -%}{%- assign mname = "July" -%}
-              {%- when "08" -%}{%- assign mname = "August" -%}
-              {%- when "09" -%}{%- assign mname = "September" -%}
-              {%- when "10" -%}{%- assign mname = "October" -%}
-              {%- when "11" -%}{%- assign mname = "November" -%}
-              {%- when "12" -%}{%- assign mname = "December" -%}
-              {%- else -%}{%- assign mname = mm -%}
-            {%- endcase -%}
-
-            {%- assign caption = mname | append: " " | append: dd | append: ", " | append: yyyy -%}
-          {%- else -%}
-            {%- assign base = f.name | split: "." | first -%}
-            {%- assign base = base | replace: "_", " " | replace: "-", " " -%}
-            {%- assign caption = base | capitalize -%}
-          {%- endif -%}
-
-          <a class="tile" href="{{ f.path }}" target="_blank">
-            <figure>
-              <img src="{{ f.path }}" alt="{{ caption }}" loading="lazy" />
-              <figcaption>{{ caption }}</figcaption>
-            </figure>
-          </a>
-        {%- endif -%}
-      {%- endfor -%}
+      <!-- Add more like this
+      <a class="tile" href="image3.jpg" target="_blank">
+        <figure>
+          <img src="image3.jpg" alt="image3" loading="lazy" />
+          <figcaption>image3</figcaption>
+        </figure>
+      </a>
+      -->
     </div>
   </main>
 
