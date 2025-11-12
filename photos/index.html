@@ -1,5 +1,5 @@
 ---
-layout: none
+layout: null
 title: Our Photo Dump
 ---
 
@@ -20,7 +20,7 @@ title: Our Photo Dump
         <a href="../index.html">← Back to home</a>
       </div>
       <h1 class="brand">Our Photo Dump</h1>
-      <p class="tagline">All our photos — auto-collected from monthly entries and the photos folder.</p>
+      <p class="tagline">All our photos — auto-collected from monthly entries and this folder.</p>
     </div>
     <div class="hero-gradient"></div>
   </header>
@@ -29,8 +29,8 @@ title: Our Photo Dump
     <div class="gallery-grid">
       {%- comment -%}
         Collect images from:
-        1) entries/*/ where filename contains 'photo' (photo.jpg, photo-1.png, etc.)
-        2) photos/ directory with common image extensions (any filename)
+        1) entries/*/ where filename contains 'photo'
+        2) photos/ directory (any image filename)
       {%- endcomment -%}
 
       {%- assign entry_photos = site.static_files
@@ -51,7 +51,7 @@ title: Our Photo Dump
 
         {%- if f.path contains '/entries/' -%}
           {%- assign parts = f.path | split: "/" -%}
-          {%- assign month_dir = parts[2] -%} {# e.g. 2025-11-15 #}
+          {%- assign month_dir = parts[2] -%}
           {%- assign dparts = month_dir | split: "-" -%}
           {%- assign yyyy = dparts[0] -%}
           {%- assign mm   = dparts[1] -%}
