@@ -1,0 +1,97 @@
+---
+layout: none
+title: Our Photo Dump
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Photo Dump — Jatin & Disha</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="site-hero">
+    <div class="hero-inner container">
+      <div class="breadcrumb">
+        <a href="../index.html">← Back to home</a>
+      </div>
+      <h1 class="brand">Our Photo Dump</h1>
+      <p class="tagline">All our photos — auto-collected from monthly entries and the photos folder.</p>
+    </div>
+    <div class="hero-gradient"></div>
+  </header>
+
+  <main class="container section">
+    <div class="gallery-grid">
+      {%- comment -%}
+        Collect images from:
+        1) entries/*/ where filename contains 'photo' (photo.jpg, photo-1.png, etc.)
+        2) photos/ directory with common image extensions (any filename)
+      {%- endcomment -%}
+
+      {%- assign entry_photos = site.static_files
+         | where_exp: "f", "f.path contains '/entries/'"
+         | where_exp: "f", "f.name contains 'photo'"
+         | where_exp: "f", "f.extname == '.jpg' or f.extname == '.jpeg' or f.extname == '.png' or f.extname == '.webp' or f.extname == '.gif'"
+      -%}
+
+      {%- assign loose_photos = site.static_files
+         | where_exp: "f", "f.path contains '/photos/'"
+         | where_exp: "f", "f.extname == '.jpg' or f.extname == '.jpeg' or f.extname == '.png' or f.extname == '.webp' or f.extname == '.gif'"
+      -%}
+
+      {%- assign all_photos = entry_photos | concat: loose_photos | sort: "path" | reverse -%}
+
+      {%- for f in all_photos -%}
+        {%- assign caption = "" -%}
+
+        {%- if f.path contains '/entries/' -%}
+          {%- assign parts = f.path | split: "/" -%}
+          {%- assign month_dir = parts[2] -%} {# e.g. 2025-11-15 #}
+          {%- assign dparts = month_dir | split: "-" -%}
+          {%- assign yyyy = dparts[0] -%}
+          {%- assign mm   = dparts[1] -%}
+          {%- assign dd   = dparts[2] -%}
+
+          {%- case mm -%}
+            {%- when "01" -%}{%- assign mname = "January" -%}
+            {%- when "02" -%}{%- assign mname = "February" -%}
+            {%- when "03" -%}{%- assign mname = "March" -%}
+            {%- when "04" -%}{%- assign mname = "April" -%}
+            {%- when "05" -%}{%- assign mname = "May" -%}
+            {%- when "06" -%}{%- assign mname = "June" -%}
+            {%- when "07" -%}{%- assign mname = "July" -%}
+            {%- when "08" -%}{%- assign mname = "August" -%}
+            {%- when "09" -%}{%- assign mname = "September" -%}
+            {%- when "10" -%}{%- assign mname = "October" -%}
+            {%- when "11" -%}{%- assign mname = "November" -%}
+            {%- when "12" -%}{%- assign mname = "December" -%}
+            {%- else -%}{%- assign mname = mm -%}
+          {%- endcase -%}
+
+          {%- assign caption = mname | append: " " | append: dd | append: ", " | append: yyyy -%}
+        {%- else -%}
+          {%- assign base = f.name | split: "." | first -%}
+          {%- assign base = base | replace: "_", " " | replace: "-", " " -%}
+          {%- assign caption = base | capitalize -%}
+        {%- endif -%}
+
+        <a class="tile" href="{{ f.path }}" target="_blank">
+          <figure>
+            <img src="{{ f.path }}" alt="{{ caption }}" loading="lazy" />
+            <figcaption>{{ caption }}</figcaption>
+          </figure>
+        </a>
+      {%- endfor -%}
+    </div>
+  </main>
+
+  <footer class="site-footer container">
+    <p>Made with ❤️ by Jatin &amp; Disha</p>
+  </footer>
+</body>
+</html>
